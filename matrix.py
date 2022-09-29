@@ -74,8 +74,7 @@ def rref(matrix):
         # make row start with a non-zero value
         if matrix[j][j] == 0:
             nz = find_nonzero_row(matrix, j)
-            if nz == -1: 
-                print("handle edge case here")
+            if nz == -1:
                 continue
 
             matrix[j], matrix[nz] = matrix[nz], matrix[j]
@@ -99,9 +98,31 @@ def random_matrix(rows, cols):
     
     return m
 
+def from_lists(*rows):
+    if len(rows) == 0: return Matrix(0,0)
+
+    matrix_rows = []
+    cols = len(rows[0])
+    for row in rows:
+        if len(row) != cols:
+            raise Exception("Cannot create a non-rectangular matrix")
+        next_row = Row(cols)
+        next_row.data = row
+
+        matrix_rows.append(next_row)
+
+    m = Matrix(len(rows), cols)
+    m.data = matrix_rows
+    return m
+
 
 if __name__ == "__main__":
-    m = random_matrix(3, 12)
+    m = from_lists(
+        [ 1, 1, 1, 2 ],
+        [ 2, 1, 1, 3 ],
+        [ 1, 1, 2, 3 ]
+    )
+
     print(m)
     rref(m)
     print(m)
